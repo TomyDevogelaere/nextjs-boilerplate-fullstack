@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import { Exo, Space_Grotesk } from "next/font/google"; // Of een ander heading font
 import "./globals.css";
 
-const geistSans = Geist({
+const exo = Exo({
+    variable: "--font-exo",
+    subsets: ["latin"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+    variable: "--font-space-grotesk",
+    subsets: ["latin"],
+});
+/*const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
@@ -10,7 +20,10 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
+});*/
+/*const myFont = localFont({
+    src: '../assets/fonts/Exo-VariableFont_wght.ttf',
+})*/
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,10 +37,9 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+        lang="en" suppressHydrationWarning className={`${exo.variable} ${spaceGrotesk.variable}`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
