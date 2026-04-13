@@ -23,10 +23,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { passwordSchema } from "@/validation/passwordSchema";
-import { registerUser } from "@/app/register/actions";
 import { Loader2, Mail, Lock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {loginWithCredentials} from "@/app/login/actions";
+import { useRouter } from "next/navigation";
 
 const formSchema = z
     .object({
@@ -36,6 +36,7 @@ const formSchema = z
 
 export default function Login() {
 
+const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -51,9 +52,11 @@ export default function Login() {
         });
 
         if (response?.error) {
-            form.setError("email", {
+            form.setError("root", {
                 message: response?.message,
             });
+        }else{
+            router.push("/my-account");
         }
     };
 
@@ -72,8 +75,10 @@ export default function Login() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.4, ease: "easeOut" }}
+                        className="w-full flex justify-center"
                     >
-                        <Card className="w-full max-w-[450px] shadow-xl border-slate-200/60 dark:border-slate-800/60 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md">
+                        <div className=" w-full max-w-[400px]">
+                        <Card className="w-full shadow-xl border-border/60 bg-card/80 dark:bg-card/70 backdrop-blur-md">
                             <CardHeader className="space-y-2 pb-8 pt-8">
                                 <div className="flex flex-col space-y-2 text-center">
                                     <CardTitle className="text-3xl font-extrabold tracking-tight sm:text-4xl antialiased">
@@ -84,6 +89,7 @@ export default function Login() {
                                     </CardDescription>
                                 </div>
                             </CardHeader>
+
                             <CardContent>
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
@@ -97,8 +103,8 @@ export default function Login() {
                                                         <FormLabel>Email</FormLabel>
                                                         <FormControl>
                                                             <div className="relative">
-                                                                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                                                <Input placeholder="naam@voorbeeld.nl" className="pl-10 h-11" {...field} />
+                                                                <Mail className="input-icon" />
+                                                                <Input placeholder="naam@voorbeeld.nl" className="input-with-icon" {...field} />
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
@@ -106,25 +112,30 @@ export default function Login() {
                                                 )}
                                             />
 
-                                                <FormField
-                                                    control={form.control}
-                                                    name="password"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Wachtwoord</FormLabel>
-                                                            <FormControl>
-                                                                <div className="relative">
-                                                                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                                                    <Input type="password" placeholder="••••••••" className="pl-10 h-11" {...field} />
-                                                                </div>
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
+                                            <FormField
+                                                control={form.control}
+                                                name="password"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Wachtwoord</FormLabel>
+                                                        <FormControl>
+                                                            <div className="relative">
+                                                                <Lock className="input-icon" />
+                                                                <Input type="password" placeholder="••••••••" className="input-with-icon" {...field} />
+                                                            </div>
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            {form.formState.errors.root?.message && (
+                                                <FormMessage>
+                                                    {form.formState.errors.root.message}
+                                                </FormMessage>
+                                            )}
                                             <Button
                                                 type="submit"
-                                                className="w-full h-12 text-lg font-semibold shadow-lg transition-transform hover:scale-[1.01] active:scale-[0.99]"
+                                                className="auth-button"
                                                 disabled={form.formState.isSubmitting}
                                             >
                                                 {form.formState.isSubmitting ? (
@@ -136,12 +147,30 @@ export default function Login() {
                                                     "Login"
                                                 )}
                                             </Button>
+
                                         </fieldset>
                                     </form>
                                 </Form>
                             </CardContent>
-
+                            <CardFooter className="flex-col gap-2">
+                                <div className="text-muted-foreground text-sm">
+                                    Don&apos;t have an account?{" "}
+                                    <Link href="/register" className="underline">
+                                        Register
+                                    </Link>
+                                </div>
+                                <div className="text-muted-foreground text-sm">
+                                    Forgot password?{" "}
+                                    <Link
+                                        href="/password-reset"
+                                        className="underline"
+                                    >
+                                        Reset my password
+                                    </Link>
+                                </div>
+                            </CardFooter>
                         </Card>
+                        </div>
                     </motion.div>
 
             </AnimatePresence>

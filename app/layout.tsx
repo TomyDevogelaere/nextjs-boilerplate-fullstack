@@ -3,6 +3,7 @@ import "./globals.css";
 import { Exo, Space_Grotesk } from "next/font/google"; // Of een ander heading font
 import "./globals.css";
 import {auth} from "@/auth";
+import LogoutButton from "@/app/logout-button";
 
 const exo = Exo({
     variable: "--font-exo",
@@ -31,9 +32,13 @@ export default async function RootLayout({
         lang="en" suppressHydrationWarning className={`${exo.variable} ${spaceGrotesk.variable}`}
     >
       <body className="antialiased">
-      <div>{session?.user?.email ?? "No user logged in"}</div>
+      <div>{session?.user?.email ? <div>
+          {session?.user?.email}
+            <LogoutButton/>
+      </div> : "No user logged in"}</div>
       {children}
       </body>
     </html>
   );
 }
+
