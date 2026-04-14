@@ -23,9 +23,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { passwordSchema } from "@/validation/passwordSchema";
-import { Loader2, Mail, Lock } from "lucide-react";
+import {Loader2, Mail, Lock, User} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import {loginWithCredentials} from "@/app/login/actions";
+import {loginWithCredentials} from "@/app/(logged-out)/login/actions";
 import { useRouter } from "next/navigation";
 
 const formSchema = z
@@ -50,7 +50,6 @@ const router = useRouter();
             email: data.email,
             password: data.password,
         });
-
         if (response?.error) {
             form.setError("root", {
                 message: response?.message,
@@ -103,9 +102,13 @@ const router = useRouter();
                                                         <FormLabel>Email</FormLabel>
                                                         <FormControl>
                                                             <div className="relative">
+                                                                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                                                <Input placeholder="naam@voorbeeld.nl" className="pl-10 h-11" {...field} />
+                                                            </div>
+                                                          {/*  <div className="relative">
                                                                 <Mail className="input-icon" />
                                                                 <Input placeholder="naam@voorbeeld.nl" className="input-with-icon" {...field} />
-                                                            </div>
+                                                            </div>*/}
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -120,9 +123,13 @@ const router = useRouter();
                                                         <FormLabel>Wachtwoord</FormLabel>
                                                         <FormControl>
                                                             <div className="relative">
+                                                                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                                                <Input type="password" placeholder="••••••••" className="pl-10 h-11" {...field} />
+                                                            </div>
+                                                           {/* <div className="relative">
                                                                 <Lock className="input-icon" />
                                                                 <Input type="password" placeholder="••••••••" className="input-with-icon" {...field} />
-                                                            </div>
+                                                            </div>*/}
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
