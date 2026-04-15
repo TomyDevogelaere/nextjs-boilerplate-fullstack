@@ -14,7 +14,6 @@ import {
     FormControl,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -23,10 +22,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { passwordSchema } from "@/validation/passwordSchema";
-import {Loader2, Mail, Lock, User} from "lucide-react";
+import {Loader2, Mail, Lock, User, MailIcon, EyeOffIcon, EyeOff, Eye} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {loginWithCredentials} from "@/app/(logged-out)/login/actions";
 import { useRouter } from "next/navigation";
+import {InputGroup, InputGroupAddon, InputGroupInput} from "@/components/ui/input-group";
+import {useState} from "react";
 
 const formSchema = z
     .object({
@@ -35,7 +36,7 @@ const formSchema = z
     })
 
 export default function Login() {
-
+    const [showPassword, setShowPassword] = useState(false)
 const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -80,7 +81,7 @@ const router = useRouter();
                         <Card className="w-full shadow-xl border-border/60 bg-card/80 dark:bg-card/70 backdrop-blur-md">
                             <CardHeader className="space-y-2 pb-8 pt-8">
                                 <div className="flex flex-col space-y-2 text-center">
-                                    <CardTitle className="text-3xl font-extrabold tracking-tight sm:text-4xl antialiased">
+                                    <CardTitle className="text-3xl font-extrabold tracking-tight sm:text-4xl antialiased font-mono">
                                         Login
                                     </CardTitle>
                                     <CardDescription className="text-base text-muted-foreground mx-auto max-w-[280px]">
@@ -92,44 +93,54 @@ const router = useRouter();
                             <CardContent>
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
-                                        <fieldset disabled={form.formState.isSubmitting} className="space-y-4">
+                                        <fieldset disabled={form.formState.isSubmitting} className="space-y-6">
 
                                             <FormField
                                                 control={form.control}
                                                 name="email"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Email</FormLabel>
+
                                                         <FormControl>
                                                             <div className="relative">
-                                                                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                                                <Input placeholder="naam@voorbeeld.nl" className="pl-10 h-11" {...field} />
+                                                                <InputGroup >
+                                                                    <InputGroupInput  placeholder="Email" {...field}/>
+                                                                    <InputGroupAddon >
+                                                                        <MailIcon />
+                                                                    </InputGroupAddon>
+                                                                </InputGroup>
                                                             </div>
-                                                          {/*  <div className="relative">
-                                                                <Mail className="input-icon" />
-                                                                <Input placeholder="naam@voorbeeld.nl" className="input-with-icon" {...field} />
-                                                            </div>*/}
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
                                                 )}
                                             />
-
                                             <FormField
                                                 control={form.control}
                                                 name="password"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Wachtwoord</FormLabel>
                                                         <FormControl>
-                                                            <div className="relative">
-                                                                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                                                <Input type="password" placeholder="••••••••" className="pl-10 h-11" {...field} />
-                                                            </div>
-                                                           {/* <div className="relative">
-                                                                <Lock className="input-icon" />
-                                                                <Input type="password" placeholder="••••••••" className="input-with-icon" {...field} />
-                                                            </div>*/}
+                                                            <InputGroup>
+                                                                <InputGroupInput
+                                                                    id="inline-end-input"
+                                                                    type={showPassword ? "text" : "password"}
+                                                                    placeholder="Enter password"
+                                                                    {...field}
+                                                                />
+                                                                <InputGroupAddon align="inline-end"
+                                                                                 onClick={() => setShowPassword((prev) => !prev)}
+                                                                                 className="cursor-pointer"
+                                                                >
+                                                                    {showPassword ? (
+                                                                        <EyeOff className="size-4" />
+                                                                    ) : (
+                                                                        <Eye className="size-4" />
+                                                                    )}
+
+
+                                                                </InputGroupAddon>
+                                                            </InputGroup>
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -159,7 +170,7 @@ const router = useRouter();
                                     </form>
                                 </Form>
                             </CardContent>
-                            <CardFooter className="flex-col gap-2">
+                            <CardFooter className="flex-col gap-2 mt-2">
                                 <div className="text-muted-foreground text-sm">
                                     Don&apos;t have an account?{" "}
                                     <Link href="/register" className="underline">
