@@ -100,10 +100,9 @@ const router = useRouter();
                                                 name="email"
                                                 render={({ field }) => (
                                                     <FormItem>
-
                                                         <FormControl>
                                                             <div className="relative">
-                                                                <InputGroup >
+                                                                <InputGroup className="h-11">
                                                                     <InputGroupInput  placeholder="Email" {...field}/>
                                                                     <InputGroupAddon >
                                                                         <MailIcon />
@@ -121,7 +120,7 @@ const router = useRouter();
                                                 render={({ field }) => (
                                                     <FormItem>
                                                         <FormControl>
-                                                            <InputGroup>
+                                                            <InputGroup className="h-11">
                                                                 <InputGroupInput
                                                                     id="inline-end-input"
                                                                     type={showPassword ? "text" : "password"}
@@ -153,7 +152,7 @@ const router = useRouter();
                                             )}
                                             <Button
                                                 type="submit"
-                                                className="auth-button"
+                                                className="w-full h-12 text-lg font-semibold shadow-lg transition-transform hover:scale-[1.01] active:scale-[0.99]"
                                                 disabled={form.formState.isSubmitting}
                                             >
                                                 {form.formState.isSubmitting ? (

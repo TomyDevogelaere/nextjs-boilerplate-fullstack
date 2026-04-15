@@ -14,7 +14,6 @@ import {
     FormControl,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -24,8 +23,10 @@ import { z } from "zod";
 import Link from "next/link";
 import { passwordMatchSchema } from "@/validation/passwordMatchSchema";
 import { registerUser } from "@/app/(logged-out)/register/actions";
-import { Loader2, Mail, Lock, User, CheckCircle2 } from "lucide-react";
+import {Loader2, User, CheckCircle2, MailIcon, EyeOff, Eye} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import {InputGroup, InputGroupAddon, InputGroupInput} from "@/components/ui/input-group";
+import {useState} from "react";
 
 const formSchema = z
     .object({
@@ -35,6 +36,7 @@ const formSchema = z
     .and(passwordMatchSchema);
 
 export default function Register() {
+    const [showPassword, setShowPassword] = useState(false)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -104,7 +106,7 @@ export default function Register() {
                         <Card className="w-full max-w-[450px] shadow-xl border-slate-200/60 dark:border-slate-800/60 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md">
                             <CardHeader className="space-y-2 pb-8 pt-8">
                                 <div className="flex flex-col space-y-2 text-center">
-                                    <CardTitle className="text-3xl font-extrabold tracking-tight sm:text-4xl antialiased">
+                                    <CardTitle className="text-3xl font-extrabold tracking-tight sm:text-4xl antialiased font-mono">
                                         Registreer
                                     </CardTitle>
                                     <CardDescription className="text-base text-muted-foreground mx-auto max-w-[280px]">
@@ -115,17 +117,20 @@ export default function Register() {
                             <CardContent>
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
-                                        <fieldset disabled={form.formState.isSubmitting} className="space-y-4">
+                                        <fieldset disabled={form.formState.isSubmitting} className="space-y-6">
                                             <FormField
                                                 control={form.control}
                                                 name="name"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Naam</FormLabel>
                                                         <FormControl>
                                                             <div className="relative">
-                                                                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                                                <Input placeholder="John Doe" className="pl-10 h-11" {...field} />
+                                                                <InputGroup className="h-11">
+                                                                    <InputGroupInput  placeholder="Name" {...field}/>
+                                                                    <InputGroupAddon >
+                                                                        <User />
+                                                                    </InputGroupAddon>
+                                                                </InputGroup>
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
@@ -137,11 +142,14 @@ export default function Register() {
                                                 name="email"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Email</FormLabel>
                                                         <FormControl>
                                                             <div className="relative">
-                                                                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                                                <Input placeholder="naam@voorbeeld.nl" className="pl-10 h-11" {...field} />
+                                                                <InputGroup className="h-11">
+                                                                    <InputGroupInput  placeholder="Email" {...field}/>
+                                                                    <InputGroupAddon >
+                                                                        <MailIcon />
+                                                                    </InputGroupAddon>
+                                                                </InputGroup>
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
@@ -154,11 +162,26 @@ export default function Register() {
                                                     name="password"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Wachtwoord</FormLabel>
                                                             <FormControl>
                                                                 <div className="relative">
-                                                                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                                                    <Input type="password" placeholder="••••••••" className="pl-10 h-11" {...field} />
+                                                                    <InputGroup className="h-11">
+                                                                        <InputGroupInput
+                                                                            id="inline-end-input"
+                                                                            type={showPassword ? "text" : "password"}
+                                                                            placeholder="Enter password"
+                                                                            {...field}
+                                                                        />
+                                                                        <InputGroupAddon align="inline-end"
+                                                                                         onClick={() => setShowPassword((prev) => !prev)}
+                                                                                         className="cursor-pointer"
+                                                                        >
+                                                                            {showPassword ? (
+                                                                                <EyeOff className="size-4" />
+                                                                            ) : (
+                                                                                <Eye className="size-4" />
+                                                                            )}
+                                                                        </InputGroupAddon>
+                                                                    </InputGroup>
                                                                 </div>
                                                             </FormControl>
                                                             <FormMessage />
@@ -170,11 +193,26 @@ export default function Register() {
                                                     name="passwordConfirm"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Bevestig</FormLabel>
                                                             <FormControl>
                                                                 <div className="relative">
-                                                                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                                                    <Input type="password" placeholder="••••••••" className="pl-10 h-11" {...field} />
+                                                                    <InputGroup className="h-11">
+                                                                        <InputGroupInput
+                                                                            id="inline-end-input"
+                                                                            type={showPassword ? "text" : "password"}
+                                                                            placeholder="Bevestig password"
+                                                                            {...field}
+                                                                        />
+                                                                        <InputGroupAddon align="inline-end"
+                                                                                         onClick={() => setShowPassword((prev) => !prev)}
+                                                                                         className="cursor-pointer"
+                                                                        >
+                                                                            {showPassword ? (
+                                                                                <EyeOff className="size-4" />
+                                                                            ) : (
+                                                                                <Eye className="size-4" />
+                                                                            )}
+                                                                        </InputGroupAddon>
+                                                                    </InputGroup>
                                                                 </div>
                                                             </FormControl>
                                                             <FormMessage />
@@ -200,7 +238,7 @@ export default function Register() {
                                     </form>
                                 </Form>
                             </CardContent>
-                            <CardFooter className="flex flex-col gap-4 border-t pt-6">
+                            <CardFooter className="flex flex-col gap-4 border-t pt-6 mt-2">
                                 <div className="text-sm text-center text-muted-foreground">
                                     Al een account?{" "}
                                     <Link href="/login" className="font-semibold text-primary hover:underline underline-offset-4">
