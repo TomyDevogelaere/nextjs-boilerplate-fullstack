@@ -4,6 +4,7 @@ import { Exo, Space_Grotesk } from "next/font/google"; // Of een ander heading f
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import {ModeToggle} from "@/components/ui/mode-toggle";
+import Navbar from "@/components/navbar";
 
 
 const exo = Exo({
@@ -38,7 +39,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
       >
-          <ModeToggle />
+          <Navbar/>
       {children}
       </ThemeProvider>
       </body>

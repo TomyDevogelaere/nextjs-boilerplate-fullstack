@@ -11,6 +11,11 @@ type AuthUser = {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // Hoe lang de sessie geldig is (bijv. 30 dagen)
+        updateAge: 24 * 60 * 60,   // Hoe vaak de vervaldatum wordt ververst (bijv. elke 24 uur)
+    },
     providers: [
         Credentials({
             credentials: {
