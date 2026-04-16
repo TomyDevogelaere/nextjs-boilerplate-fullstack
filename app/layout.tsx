@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Exo, Space_Grotesk } from "next/font/google"; // Of een ander heading font
 import "./globals.css";
-import {auth} from "@/auth";
+import { ThemeProvider } from "@/components/theme-provider"
+import {ModeToggle} from "@/components/ui/mode-toggle";
 
 
 const exo = Exo({
@@ -31,7 +32,15 @@ export default async function RootLayout({
         lang="en" suppressHydrationWarning className={`${exo.variable} ${spaceGrotesk.variable}`}
     >
       <body className="antialiased">
+      <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+      >
+          <ModeToggle />
       {children}
+      </ThemeProvider>
       </body>
     </html>
   );

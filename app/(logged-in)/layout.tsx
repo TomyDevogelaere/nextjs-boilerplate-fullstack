@@ -2,6 +2,7 @@ import Link from "next/link";
 import LogoutButton from "./logout-button";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import {ModeToggle} from "@/components/ui/mode-toggle";
 
 export default async function LoggedInLayout({
                                                  children,
@@ -28,6 +29,7 @@ export default async function LoggedInLayout({
                 <div>
                     <LogoutButton />
                 </div>
+
             </nav>
             <div className="flex-1 flex justify-center items-center">{children}</div>
         </div>
