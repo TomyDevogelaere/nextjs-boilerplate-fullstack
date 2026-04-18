@@ -3,7 +3,7 @@ import "./globals.css";
 import { Exo, Space_Grotesk } from "next/font/google"; // Of een ander heading font
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
-import {ModeToggle} from "@/components/ui/mode-toggle";
+import {Toaster} from "@/components/ui/sonner"
 import Navbar from "@/components/navbar";
 
 
@@ -41,6 +41,7 @@ export default async function RootLayout({
       >
           <Navbar/>
       {children}
+          <Toaster/>
       </ThemeProvider>
       </body>
     </html>
