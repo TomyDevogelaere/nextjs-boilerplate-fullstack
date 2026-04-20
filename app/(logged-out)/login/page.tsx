@@ -59,6 +59,8 @@ const router = useRouter();
             router.push("/my-account");
         }
     };
+    // nodig om de ingevulde email door te sturen naar reset email form
+    const email = form.getValues("email");
 
     return (
         <main className="relative flex justify-center items-center min-h-screen overflow-hidden p-4 font-sans">
@@ -176,10 +178,12 @@ const router = useRouter();
                                         Register
                                     </Link>
                                 </div>
-                                <div className="text-muted-foreground text-sm">
+                                <div className ="text-muted-foreground text-sm">
                                     Forgot password?{" "}
                                     <Link
-                                        href="/password-reset"
+                                        href={`/password-reset${
+                                            email ? `?email=${encodeURIComponent(email)}` : ""
+                                        }`}
                                         className="underline"
                                     >
                                         Reset my password
