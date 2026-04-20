@@ -41,7 +41,7 @@ export default async function RootLayout({
       >
           <Navbar/>
       {children}
-          <Toaster/>
+          <Toaster richColors/>
       </ThemeProvider>
       </body>
     </html>

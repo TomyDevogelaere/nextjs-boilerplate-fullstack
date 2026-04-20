@@ -60,7 +60,7 @@ export default function ChangePasswordForm() {
         } else {
                 toast.success("Password changed successfully",
                     {
-                        description: "description",
+                        description: "Password is now successfully updated",
                         position: "bottom-right",
 
             })
