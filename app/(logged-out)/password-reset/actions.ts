@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import db from "@/db/index";
 import { passwordResetTokens } from "@/db/passwordResetTokensSchema";
 import { users } from "@/db/schema";
-import { mailer } from "@/lib/email";
+// import { mailer } from "@/lib/email";
 import { randomBytes } from "crypto";
 import { eq } from "drizzle-orm";
 
@@ -30,24 +30,23 @@ export const passwordReset = async (emailAddress: string) => {
     }
     // from crypto library
     const passwordResetToken = randomBytes(32).toString("hex");
-    const tokenExpiry = new Date(Date.now() + 3600000);
+    const tokenExpiry = new Date(Date.now() + 3600000); // 1 uur
 
     await db
         .insert(passwordResetTokens)
         .values({
-            userId: user.id,
+            Userid: user.id,
             token: passwordResetToken,
             tokenExpiry,
         })
-        .onConflictDoUpdate({
-            target: passwordResetTokens.userId,
+        .onDuplicateKeyUpdate({   // als een user meerdere keren een password reset doet passen we de lijn aan - per user is er maar 1 entry in deze tabel
             set: {
                 token: passwordResetToken,
                 tokenExpiry,
             },
         });
 
-    const resetLink = `${process.env.SITE_BASE_URL}/update-password?token=${passwordResetToken}`;
+/*    const resetLink = `${process.env.SITE_BASE_URL}/update-password?token=${passwordResetToken}`;
 
     await mailer.sendMail({
         from: "test@resend.dev",
@@ -58,5 +57,5 @@ Here's your password reset link. This link will expire in 1 hour:
 <a href="${resetLink}">${resetLink}</a>`,
     });
 
-    console.log({ passwordResetToken });
+    console.log({ passwordResetToken });*/
 };

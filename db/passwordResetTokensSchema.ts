@@ -6,7 +6,8 @@ export const passwordResetTokens = mysqlTable('password_reset_tokens', {
     id: int('id').primaryKey().autoincrement(),
     Userid: int('user_id').references(() => users.id, {
        onDelete: 'cascade',
-    }),
+    })
+        .unique(),
     token: varchar("token", { length: 191 }),
     tokenExpiry: timestamp('token_expiry'),
 });
