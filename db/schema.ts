@@ -1,3 +1,3 @@
 export { users } from "@/db/userSchema";
-export { passwordResteTokens } from "@/db/passwordRestTokensSchema";
+export { passwordResetTokens } from "@/db/passwordResetTokensSchema";
 
