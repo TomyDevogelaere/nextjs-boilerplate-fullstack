@@ -1,12 +1,12 @@
 "use server";
 
-import { auth } from "@/auth";
+import {auth} from "@/auth";
 import db from "@/db/index";
-import { passwordResetTokens } from "@/db/passwordResetTokensSchema";
-import { users } from "@/db/schema";
-// import { mailer } from "@/lib/email";
-import { randomBytes } from "crypto";
-import { eq } from "drizzle-orm";
+import {passwordResetTokens} from "@/db/passwordResetTokensSchema";
+import {users} from "@/db/schema";
+import {randomBytes} from "crypto";
+import {eq} from "drizzle-orm";
+import {mailer} from "@/lib/email";
 
 export const passwordReset = async (emailAddress: string) => {
     const session = await auth();
@@ -46,7 +46,7 @@ export const passwordReset = async (emailAddress: string) => {
             },
         });
 
-/*    const resetLink = `${process.env.SITE_BASE_URL}/update-password?token=${passwordResetToken}`;
+    const resetLink = `${process.env.SITE_BASE_URL}/update-password?token=${passwordResetToken}`;
 
     await mailer.sendMail({
         from: "test@resend.dev",
@@ -57,5 +57,5 @@ Here's your password reset link. This link will expire in 1 hour:
 <a href="${resetLink}">${resetLink}</a>`,
     });
 
-    console.log({ passwordResetToken });*/
+    console.log({passwordResetToken});
 };
