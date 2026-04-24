@@ -39,9 +39,15 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
       >
+          <div className="flex flex-col min-h-screen relative overflow-hidden">
           <Navbar/>
-      {children}
-          <Toaster richColors/>
+
+              <main className="flex-1 flex items-center justify-center">
+                  {children}
+              </main>
+
+              <Toaster richColors/>
+          </div>
       </ThemeProvider>
       </body>
     </html>
