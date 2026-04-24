@@ -22,7 +22,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { passwordMatchSchema } from "@/validation/passwordMatchSchema";
-import { registerUser } from "@/app/(logged-out)/register/actions";
+import { registerUser } from "@/app/(public)/register/actions";
 import {Loader2, User, CheckCircle2, MailIcon, EyeOff, Eye} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "@/components/ui/input-group";

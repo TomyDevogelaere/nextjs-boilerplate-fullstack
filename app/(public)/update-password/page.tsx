@@ -3,7 +3,7 @@ import db from "@/db/index";
 import {passwordResetTokens} from "@/db/passwordResetTokensSchema";
 import {eq} from "drizzle-orm";
 import Link from "next/link";
-import UpdatePasswordForm from "@/app/(logged-out)/update-password/update-password-form";
+import UpdatePasswordForm from "@/app/(public)/update-password/update-password-form";
 
 
 export default async function UpdatePassword({searchParams,}: {

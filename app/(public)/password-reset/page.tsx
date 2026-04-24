@@ -12,7 +12,7 @@ import {z} from "zod";
 import {passwordSchema} from "@/validation/passwordSchema";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {passwordReset} from "@/app/(logged-out)/password-reset/actions";
+import {passwordReset} from "@/app/(public)/password-reset/actions";
 import {useSearchParams} from "next/navigation";
 
 export default function PasswordReset() {
