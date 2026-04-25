@@ -63,18 +63,8 @@ const router = useRouter();
     const email = form.getValues("email");
 
     return (
-        <div className="w-full flex justify-center items-center">
-
-            <AnimatePresence mode="wait">
-                    <motion.div
-                        key="form"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
-                        className="w-full flex justify-center"
-                    >
-                        <div className=" w-full max-w-[400px]">
+        <div className="flex-1 flex flex-col items-center justify-center p-4">
+          <div className=" w-full max-w-[400px]">
                         <Card className="w-full shadow-xl border-border/60 bg-card/80 dark:bg-card/70 backdrop-blur-md">
                             <CardHeader className="space-y-2 pb-8 pt-8">
                                 <div className="flex flex-col space-y-2 text-center">
@@ -187,9 +177,7 @@ const router = useRouter();
                             </CardFooter>
                         </Card>
                         </div>
-                    </motion.div>
 
-            </AnimatePresence>
         </div>
     );
 }

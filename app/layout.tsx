@@ -39,7 +39,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
       >
-          <div className="flex flex-col min-h-screen relative overflow-hidden">
+          <div className="flex flex-col  relative overflow-hidden">
                   {children}
               <Toaster richColors/>
           </div>

@@ -6,6 +6,7 @@ import {Menu, X, ChevronDown} from 'lucide-react';
 import {NavChild, navConfig, NavItem} from '@/types/navs-admin';
 import {usePathname} from 'next/navigation';
 import {ModeToggle} from "@/components/ui/mode-toggle";
+import LogoutButton from "@/app/(admin)/logout-button";
 
 export default function NavbarAdmin() {
     const [isOpen, setIsOpen] = useState(false);
@@ -57,12 +58,7 @@ export default function NavbarAdmin() {
                         </button>*/}
 
                         <ModeToggle/>
-                        <Link href="/login">
-                            <button
-                                className="px-4 py-2 text-sm font-semibold text-foreground hover:bg-accent border border-border rounded-md transition-all shadow-sm">
-                                Log in
-                            </button>
-                        </Link>
+                        <LogoutButton/>
                         {/* <div className="w-9 h-9 rounded-full border border-border bg-card overflow-hidden shadow-sm">
                             <img src="https://avatar.vercel.sh/user" alt="User Profile" />
                         </div>*/}
