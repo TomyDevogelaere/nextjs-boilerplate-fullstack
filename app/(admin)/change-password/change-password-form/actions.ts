@@ -1,6 +1,5 @@
 "use server";
 
-import { auth } from "@/auth";
 import db from "@/db";
 import {users} from "@/db/schema";
 import { passwordMatchSchema } from "@/validation/passwordMatchSchema";
@@ -8,6 +7,7 @@ import { passwordSchema } from "@/validation/passwordSchema";
 import { compare, hash } from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import {VerifyAuthenticatedUser} from "@/DAL/verify-user";
 
 export const changePassword = async ({
                                          currentPassword,
@@ -18,7 +18,8 @@ export const changePassword = async ({
     password: string;
     passwordConfirm: string;
 }) => {
-    const session = await auth();
+
+    const session = await VerifyAuthenticatedUser();
 
     if (!session?.user?.id) {
         return {
