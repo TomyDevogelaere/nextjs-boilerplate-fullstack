@@ -1,15 +1,13 @@
 "use server";
 
-import {auth} from "@/auth";
-import db from "@/db/index";
-import {passwordResetTokens} from "@/db/passwordResetTokensSchema";
-import {users} from "@/db/schema";
+
 import {randomBytes} from "crypto";
-import {eq} from "drizzle-orm";
 import {mailer} from "@/lib/email";
+import {VerifyAuthenticatedUser} from "@/DAL/verify-user";
+import {createPasswordResetToken, getUserByEmail} from "@/DAL/users";
 
 export const passwordReset = async (emailAddress: string) => {
-    const session = await auth();
+    const session = await VerifyAuthenticatedUser();
     // als een user reeds ingelogd is mag hij niet op deze pagina zijn
     if (!!session?.user?.id) {
         return {
@@ -18,12 +16,8 @@ export const passwordReset = async (emailAddress: string) => {
         };
     }
     // get the user ID from db
-    const [user] = await db
-        .select({
-            id: users.id,
-        })
-        .from(users)
-        .where(eq(users.email, emailAddress));
+    const user = await getUserByEmail(emailAddress);
+
     // als er geen user is met dat emailadres, om bad actors tegen te gaan geven we geen foutmelding hier
     if (!user) {
         return;
@@ -32,19 +26,7 @@ export const passwordReset = async (emailAddress: string) => {
     const passwordResetToken = randomBytes(32).toString("hex");
     const tokenExpiry = new Date(Date.now() + 3600000); // 1 uur
 
-    await db
-        .insert(passwordResetTokens)
-        .values({
-            Userid: user.id,
-            token: passwordResetToken,
-            tokenExpiry,
-        })
-        .onDuplicateKeyUpdate({   // als een user meerdere keren een password reset doet passen we de lijn aan - per user is er maar 1 entry in deze tabel
-            set: {
-                token: passwordResetToken,
-                tokenExpiry,
-            },
-        });
+    createPasswordResetToken(user.id,passwordResetToken, tokenExpiry);
 
     const resetLink = `${process.env.SITE_BASE_URL}/update-password?token=${passwordResetToken}`;
 

@@ -1,13 +1,11 @@
 "use server";
 
-import db from "@/db";
-import {users} from "@/db/schema";
 import { passwordMatchSchema } from "@/validation/passwordMatchSchema";
 import { passwordSchema } from "@/validation/passwordSchema";
 import { compare, hash } from "bcryptjs";
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 import {VerifyAuthenticatedUser} from "@/DAL/verify-user";
+import {getUserById, updateUserPassword} from "@/DAL/users";
 
 export const changePassword = async ({
                                          currentPassword,
@@ -19,6 +17,7 @@ export const changePassword = async ({
     passwordConfirm: string;
 }) => {
 
+    // AUTH check
     const session = await VerifyAuthenticatedUser();
 
     if (!session?.user?.id) {
@@ -40,7 +39,7 @@ export const changePassword = async ({
         passwordConfirm,
     });
 
-    if (passwordValidation?.error) {
+    if (!passwordValidation?.success) {
         return {
             error: true,
             message:
@@ -48,10 +47,7 @@ export const changePassword = async ({
         };
     }
 
-    const [user] = await db
-        .select()
-        .from(users)
-        .where(eq(users.id, parseInt(session.user.id)));
+    const user = await getUserById(Number(session.user.id));
 
     if (!user) {
         return {
@@ -71,10 +67,5 @@ export const changePassword = async ({
 
     const hashedPassword = await hash(password, 10);
 
-    await db
-        .update(users)
-        .set({
-            password: hashedPassword,
-        })
-        .where(eq(users.id, parseInt(session.user.id)));
+    await updateUserPassword(Number(session.user.id), hashedPassword);
 };

@@ -2,9 +2,8 @@
 
 import {z} from "zod";
 import {passwordMatchSchema} from "@/validation/passwordMatchSchema";
-import db from "@/db";
 import {hash} from "bcryptjs";
-import {users} from "@/db/schema";
+import {createUser} from "@/DAL/users";
 
 export const registerUser = async ({name, email, password, passwordConfirm}: {
     name: string,
@@ -38,11 +37,9 @@ try {
 
     // user validation success
     const hashedPassword = await hash(password, 10);
-    await db.insert(users).values({
-        name,
-        email,
-        password: hashedPassword,
-    })
+
+    createUser(name, email,hashedPassword);
+
 }catch (error: any) {
     // We checken zowel de error zelf als de 'cause' (oorzaak)
     const dbError = error.cause || error;
